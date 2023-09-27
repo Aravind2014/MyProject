@@ -1,0 +1,167 @@
+package Airline;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Airline {
+	private int bookTickets;
+	private int cancelTickets;
+	private int Availabletickets;
+	
+	public Airline() {
+		
+	}
+
+	public int getBookTickets() {
+		return bookTickets;
+	}
+
+	public void setBookTickets(int bookTickets) {
+		this.bookTickets = bookTickets;
+	}
+
+	public int getCancelTickets() {
+		return cancelTickets;
+	}
+
+	public void setCancelTickets(int cancelTickets) {
+		this.cancelTickets = cancelTickets;
+	}
+
+	@Override
+	public String toString() {
+		return "Airline [bookTickets=" + bookTickets + ", cancelTickets=" + cancelTickets + ", Availabletickets="
+				+ Availabletickets + "]";
+	}
+
+	public interface AirlineOperationInterface {
+
+		public void bookTickets();
+		public void CancelTickets();
+		public void AvailableTickets();
+		
+	}
+	public class Airlineimpe implements AirlineOperationInterface {
+
+		Airline air=new Airline();
+		HashMap<Integer ,String> reserve=new HashMap<>();
+		
+		int TotalAvailableSeats=10;
+		Scanner inp=new Scanner(System.in);
+		
+		@Override
+		public void bookTickets() {
+			if(reserve.size()<TotalAvailableSeats)
+			{
+				System.out.println("Enter your name");
+				String PassengerName=inp.next();
+				System.out.println("Enter the seat number from 1-"+TotalAvailableSeats);
+				int seatnum=inp.nextInt();
+				
+				if(reserve.containsKey(seatnum) || seatnum>TotalAvailableSeats) {
+					System.out.println("please choose available or valid seat number");
+				}
+				else {
+					System.out.println("Reservation succesful  "+"Seatnumber is= "+seatnum+" "+"Name="+PassengerName);
+					reserve.put(seatnum, "Occupied");
+					
+				}
+			}else {
+				System.out.println("sorry.... All Tickets Reserved");
+				
+			}
+			
+		}
+
+		@Override
+		public void CancelTickets() {
+			System.out.println("Enter you seat number");
+			int seatnum=inp.nextInt();
+			if(reserve.containsKey(seatnum)) {
+				System.out.println(seatnum+" cancelled");
+				reserve.remove(seatnum);
+			}else {
+				System.out.println("This seat is not Reserved or invalid");
+				
+			}
+			
+		}
+
+		@Override
+		public void AvailableTickets() {
+		
+			if(reserve.isEmpty()) {
+				System.out.println("All seats are available");
+			}
+			else {
+				for(Map.Entry<Integer, String>m:reserve.entrySet())
+				{
+				System.out.println(m.getKey()+" "+m.getValue()+" ; else,Remaining seats Available");
+			}
+			
+		}
+
+		
+			
+		}
+		
+	}public class AirlineMain {
+
+		public static void main(String[] args) {
+			// TODO Auto-generated method stub
+			Airlineimpe ab=new Airlineimpe();
+			System.out.println("Enter login details");
+			
+			String UserName="Arvi123";
+			int password=1234;
+			
+			Scanner inp=new Scanner(System.in);
+			System.out.println("Welcome to Airline Reservation");
+			
+			System.out.println("enter username");
+			String name=inp.next();
+			
+			System.out.println("enter Password");
+			int Pin=inp.nextInt();
+			
+			if((password==Pin && UserName.equals(name))){
+				while(true) {
+				System.out.println("1.Book Ticket\n 2.cancel Ticket\n 3.AvailableTickets\n 4.Exit");
+				System.out.println("Enter your choice ");
+				int A=inp.nextInt();
+				
+				if(A==1) 
+				{
+					ab.bookTickets();
+				}
+				else if(A==2)
+				{
+					ab.CancelTickets();
+				}
+				else if (A==3) 
+				{
+					ab.AvailableTickets();
+				}
+				else if(A==4)
+				{
+					System.out.println("Thank you for choosing Airline Reservation System");
+					System.exit(0);
+				}
+				else 
+				{
+					System.out.println("your choice is invalid");
+				}
+			}
+
+		}
+			else 
+			{
+			System.out.println("invalid Credentials");
+		}
+
+	}
+	}
+	
+	
+}
